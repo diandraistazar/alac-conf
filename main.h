@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <dirent.h>
+
+// Structure
+typedef struct {
+	char *name;		// Store name of file
+	char *content; // Store content of file
+} Files;
+
+// Function Prototypes
+void initialize();
+void printHelp(void);
+void prntList(Files *strc);
+int listingThem(char *arg);
