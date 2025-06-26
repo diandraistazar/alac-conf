@@ -11,6 +11,7 @@ char *name[] = {
 size_t size = sizeof(name)/sizeof(name[0]);
 int length_win = 0, length_clr = 0, length_fon = 0;
 
+/* Main func */
 int main(int argc, char *argv[]) {
 	
 	if(argc == 1) {
@@ -27,9 +28,11 @@ int main(int argc, char *argv[]) {
 		listingThem(argv[2]);
 	}
 
+	freeAll();
 	return 0;
 }
 
+/* Functions */
 void initialize(void) {
 	DIR *temp = NULL;
 	struct dirent *file = NULL;
@@ -99,8 +102,25 @@ int listingThem(char *arg) {
 	for(int i = 0; i < len; i++) {
 		printf("%s\n", ptr[i].name);
 	}
-
+	
+	
 	return 0;
+}
+
+void freeAll(void) {
+	// free name and content member
+	for(int i = 0; i < length_win; i++)		
+		free(window[i].name);
+	
+	for(int i = 0; i < length_clr; i++)
+		free(color[i].name);
+	
+	for(int i = 0; i < length_fon; i++)
+		free(font[i].name);
+	
+	free(window);
+	free(color);
+	free(font);
 }
 
 void printHelp(void) {

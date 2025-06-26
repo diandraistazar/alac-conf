@@ -10,7 +10,8 @@ typedef struct {
 } Files;
 
 // Function Prototypes
-void initialize();
+void initialize(void);
+void freeAll(void);
 void printHelp(void);
 void prntList(Files *strc);
 int listingThem(char *arg);
