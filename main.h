@@ -21,6 +21,6 @@ void initialize(void);
 void freeAll(void);
 void printHelp(void);
 void prntList(Files *strc);
-void whatIsCurrent(void);
 int listingThem(enum which Opt);
-int selectingThem(enum which Opt);
+int selectingThem(char **argv);
+int isConfigAvail(char *buffer);
