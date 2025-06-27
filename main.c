@@ -17,18 +17,58 @@ int main(int argc, char *argv[]) {
 	if(argc == 1) {
 		printf("Hmm, there is no arguments..\n");
 		printf("See \"help\" for more details\n");
-		return 0;
+		return -1;
 	}
 	else if(!strcmp(argv[1], "help")) {
 		printHelp();
 	}
 	
 	initialize();	// Load configs
-	if(!strcmp(argv[1], "list")) {
-		listingThem(argv[2]);
+	
+	
+	if(!strcmp(argv[1], "list")) {	// Listing
+		if(argv[2]) {
+
+		if(!strcmp(argv[2], "window"))
+			listingThem(window_e);
+
+		else if(!strcmp(argv[2], "color"))
+			listingThem(color_e);
+		
+		else if(!strcmp(argv[2], "font"))
+			listingThem(font_e);
+		}
+		else {
+			printf("Needed an argument\n");
+		}
+	}
+	
+	//else if(!strcmp(argv[1], "current")) {	// Current configs
+	//	whatIsCurrent()
+	//}
+	
+	else if(!strcmp(argv[1], "select")) {	// Select
+		if(argv[2]) {	
+
+		if(!strcmp(argv[2], "window"))
+			selectingThem(window_e);
+
+		else if(!strcmp(argv[2], "color"))
+			selectingThem(color_e);
+
+		else if(!strcmp(argv[2], "font"))
+			selectingThem(font_e);
+		}
+		else {
+			printf("Needed an argument\n");
+		}
 	}
 
-	freeAll();
+	else {
+		printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
+	}
+
+	freeAll();	// Free memory
 	return 0;
 }
 
@@ -66,58 +106,53 @@ void initialize(void) {
 	}
 }
 
-int listingThem(char *arg) {
-	// Checking is there argument for list option
-	if(arg == NULL) {
-		printf("\"list\" option need an argument\n"
-		       "Available Arguments: window, color, font\n");
-		return -1;
-	}
+void whatIsCurrent(void) {
+}
 
+int listingThem(enum which Opt) {
 	Files *ptr = NULL;
 	char *name = NULL;
 	int len;
-	if(!strcmp(arg, "window")) {
+	if(Opt == window_e) {
 		ptr = window;
 		len = length_win;
 		name = "Window";
 	}
-	else if(!strcmp(arg, "font")) {
+	else if(Opt == font_e) {
 		ptr = font;
 		len = length_fon;
 		name = "Font";
 	}
-	else if(!strcmp(arg, "color")) {
+	else if(Opt == color_e) {
 		ptr = color;
 		len = length_clr;
 		name = "Color";
 	}
 
-	if(len == 0) {
-		printf("Honestly, There are no %s configs available\n", name);
+	// Checking
+	if(len == 0 && name) {
+		printf("Honestly, There are no \"%s\" configs available\n", name);
 		return -1;
 	}
 
+	// Do it
 	printf("%s configs:\n", name);
 	for(int i = 0; i < len; i++) {
-		printf("%s\n", ptr[i].name);
+		printf("- %s\n", ptr[i].name);
 	}
-	
 	
 	return 0;
 }
 
+int selectingThem(enum which Opt) {
+}
+
 void freeAll(void) {
 	// free name and content member
-	for(int i = 0; i < length_win; i++)		
-		free(window[i].name);
-	
-	for(int i = 0; i < length_clr; i++)
-		free(color[i].name);
-	
-	for(int i = 0; i < length_fon; i++)
-		free(font[i].name);
-	
+	while(length_fon--) free(font[length_fon].name);
+	while(length_win--) free(window[length_win].name);
+	while(length_clr--) free(color[length_clr].name);
+
 	free(window);
 	free(color);
 	free(font);
@@ -126,6 +161,7 @@ void freeAll(void) {
 void printHelp(void) {
 	char *help = "alacrittyTheme version 0.1\n"
 	             "Created by Diandra\n\n"
-	             "list [color,font,window]\n";
+	             "list [color,font,window]\n"
+	             "current\n";
 	fprintf(stdout, "%s", help);
 }
