@@ -1,5 +1,5 @@
 CC := gcc
-FLAGS := -Wall --std=c99 
+FLAGS := -Wall --std=c99 -g
 SRC := main.c
 OUT := alacrittyTheme
 

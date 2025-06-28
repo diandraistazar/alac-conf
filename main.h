@@ -14,6 +14,7 @@ enum which {
 	window_e,
 	color_e,
 	font_e,
+	all_e,
 };
 
 // Function Prototypes
@@ -21,6 +22,5 @@ void initialize(void);
 void freeAll(void);
 void printHelp(void);
 void prntList(Files *strc);
-int listingThem(enum which Opt);
-int selectingThem(char **argv);
-int isConfigAvail(char *buffer);
+void listingThem(enum which Opt);
+void selectingThem(char **argv, int argc);

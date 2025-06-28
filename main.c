@@ -45,7 +45,7 @@ int main(int argc, char *argv[]) {
 			// Selecting Configs
 			else if(!strcmp(argv[1], "select")) {	// Select
 				if(argv[2]) {
-					selectingThem(argv);
+					selectingThem(argv, argc);
 				}
 				else printf("Needed an argument\n");
 				break;
@@ -55,7 +55,8 @@ int main(int argc, char *argv[]) {
 			else printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
 	}
 
-	freeAll();	// Free memory
+	// Free Memory
+	freeAll();
 	return 0;
 }
 
@@ -117,10 +118,11 @@ void initialize(void) {
 	}
 }
 
-int listingThem(enum which Opt) {
+void listingThem(enum which Opt) {
 	Files *ptr = NULL;
 	char *name = NULL;
 	int len;
+
 	switch(Opt) {
 		case window_e:
 			ptr = window;
@@ -137,86 +139,102 @@ int listingThem(enum which Opt) {
 			len = length_clr;
 			name = "Color";
 			break;
+		case all_e:
+			break;
 	}
 
 	// Checking
 	if(len == 0 && name) {
 		printf("Honestly, There are no \"%s\" configs available\n", name);
-		return -1;
 	}
-
-	// Do it
-	printf("%s configs:\n", name);
-	for(int i = 0; i < len; i++) printf("- %s\n", ptr[i].name);
-	return 0;
+	else {
+		// Do it
+		printf("%s configs:\n", name);
+		for(int i = 0; i < len; i++) printf("- %s\n", ptr[i].name);
+	}
 }
 
-int selectingThem(char **argv) {
-	// user argument
-	char *buffer[size];
-	int index = 0;
-	for(int x = 2; x < size+2; x++) {
-		if(argv[x]) {
-			buffer[x-2] = argv[x];
-			index++;
-			continue;
-		}
-		break;
-	}
-	
-	// selecting
-	return 0;
-}
-
-int isConfigAvail(char *buffer) {
+void selectingThem(char **argv, int argc) {
 	Files *ptr = NULL;
 	char *path = NULL;
-	int len, status = 0;
-	for(int x = 0; x < size; x++) {
-		switch(x) {
-			case window_e:
-				ptr = window;
-				len = length_win;
-				path = name[window_e];
-				break;
-			case font_e:
-				ptr = font;
-				len = length_fon;
-				path = name[font_e];
-				break;
-			case color_e:
-				ptr = color;
-				len = length_clr;
-				path = name[color_e];
-				break;
-		}
-		
-		for(int j = 0; j < len; j++) {
-			if(!strcmp(buffer, ptr[j].name) && !status) {
-				printf("Found \"%s\" config file in \"%s\"\n", buffer, path);
-				status = 1;
-				return 0;
+	int len;
+
+	if(argc >= 5) {
+		for(int x = 0; x < (argc-2); x++) {
+			switch(x) {
+				case window_e:
+					ptr = window;
+					path = name[window_e];
+					len = length_win;
+					break;
+				case color_e:
+					ptr = color;
+					path = name[color_e];
+					len = length_clr;
+					break;
+				case font_e:
+					ptr = font;
+					path = name[font_e];
+					len = length_fon;
+					break;
+				}
+				
+				// Checking Is there the config?
+				int len_name = strlen(name[x]);
+				for(int i = 0; i < len; i++) {
+				if(!strcmp(ptr[i].name, argv[x+2])) {
+					// Open file
+					int sz_path = strlen(ptr[i].name) + len_name+1;
+					char toPath[sz_path];
+					memset(toPath, 0, sz_path);
+					strcat(toPath, name[x]), strcat(toPath, "/"), strcat(toPath, ptr[i].name);
+					
+					FILE *ptrFile = fopen(toPath, "r");
+					if(!ptrFile)			// If fopen func return NULL, run the statement below
+						continue;
+					printf("Founded the \"%s\" config file in \"%s\"\n", argv[x+2], path);
+						
+					// Read content of file
+					fseek(ptrFile, 0, SEEK_END);
+					int bytes_rd = ftell(ptrFile);
+					fseek(ptrFile, 0, SEEK_SET);
+					
+					// Then, store them to buffer
+					ptr[i].content = malloc(bytes_rd);
+					memset(ptr[i].content, 0, bytes_rd);
+					fread(ptr[i].content, 1, bytes_rd-1, ptrFile);
+					ptr[i].content[bytes_rd] = '\0';
+					fclose(ptrFile);
+				}
 			}
 		}
-
-		if(!status)
-			printf("\"%s\" config file not found in \"%s\"\n", buffer, path);
 	}
-	return 1;
+	else {
+		printf("Just %d arguments, You need %d more\n", argc-2, 3-(argc-2));
+	}
 }
 
 void freeAll(void) {
 	// free name and content member
-	while(length_fon--) free(font[length_fon].name);
-	while(length_win--) free(window[length_win].name);
-	while(length_clr--) free(color[length_clr].name);
+	while(length_win--) {
+		free(window[length_win].name);
+		free(window[length_win].content);
+	}
+	while(length_fon--) {
+		free(font[length_fon].name);
+		free(font[length_fon].content);
+	}
+	while(length_clr--) {
+		free(color[length_clr].name);
+		free(color[length_clr].content);
+	}
 	free(window), free(color), free(font);
 }
 
 void printHelp(void) {
 	char *help = "alacrittyTheme version 0.1\n"
 	             "Created by Diandra\n\n"
-	             "list [color,font,window]\n"
-	             "current\n";
+	             "list [window,color,font]\n"
+	             "select [window-cfg, color-cfg, font-cfg]\n";
 	fprintf(stdout, "%s", help);
 }
