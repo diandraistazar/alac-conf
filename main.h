@@ -9,6 +9,12 @@ typedef struct {
 	char *content; // Store content of file
 } Files;
 
+extern Files *window, *color, *font;
+extern int length_win, length_clr, length_fon;
+extern char *name[];
+extern size_t size;
+extern char *config_path;
+
 // Enum
 enum which {
 	window_e,
@@ -18,7 +24,7 @@ enum which {
 };
 
 // Function Prototypes
-void initialize(void);
+void load_configs(void);
 void freeAll(void);
 void printHelp(void);
 void prntList(Files *strc);

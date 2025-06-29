@@ -1,0 +1,10 @@
+[window]
+padding = { x = 22, y = 22 }         # Lebih luas → terasa "lega"
+decorations = "None"
+opacity = 0.98                     # Sedikit transparan, adem
+blur = false                        # Untuk efek kaca, aktifkan compositor
+startup_mode = "Maximized"
+title = "My Terminal"
+decorations_theme_variant = "Dark"
+resize_increments = false
+level = "Normal"

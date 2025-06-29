@@ -1,15 +1,14 @@
 #include "main.h"
 
-Files *window = NULL;
-Files *color = NULL;
-Files *font = NULL;
+Files *window = NULL, *color = NULL, *font = NULL;
+int length_win = 0, length_clr = 0, length_fon = 0;
+char *config_path = "/home/diandra/.config/alacritty/alacritty.toml";
 char *name[] = {
 		"configurations/windows",		// window configs
 		"configurations/colors",		// color configs
 		"configurations/fonts",			// font configs
 };
 size_t size = sizeof(name)/sizeof(name[0]);
-int length_win = 0, length_clr = 0, length_fon = 0;
 
 /* Main func */
 int main(int argc, char *argv[]) {
@@ -28,7 +27,7 @@ int main(int argc, char *argv[]) {
 			}
 
 			// Initialize config files
-			initialize();
+			load_configs();
 
 			// Listing file
 			if(!strcmp(argv[1], "list")) {
@@ -61,7 +60,8 @@ int main(int argc, char *argv[]) {
 }
 
 /* Functions */
-void initialize(void) {
+void load_configs(void) {
+	
 	DIR *temp = NULL;
 	struct dirent *file = NULL;
 	Files *ptr = NULL;
@@ -115,102 +115,6 @@ void initialize(void) {
 		// Free memory
 		closedir(temp);
 		free(file);
-	}
-}
-
-void listingThem(enum which Opt) {
-	Files *ptr = NULL;
-	char *name = NULL;
-	int len;
-
-	switch(Opt) {
-		case window_e:
-			ptr = window;
-			len = length_win;
-			name = "Window";
-			break;
-		case font_e:
-			ptr = font;
-			len = length_fon;
-			name = "Font";
-			break;
-		case color_e:
-			ptr = color;
-			len = length_clr;
-			name = "Color";
-			break;
-		case all_e:
-			break;
-	}
-
-	// Checking
-	if(len == 0 && name) {
-		printf("Honestly, There are no \"%s\" configs available\n", name);
-	}
-	else {
-		// Do it
-		printf("%s configs:\n", name);
-		for(int i = 0; i < len; i++) printf("- %s\n", ptr[i].name);
-	}
-}
-
-void selectingThem(char **argv, int argc) {
-	Files *ptr = NULL;
-	char *path = NULL;
-	int len;
-
-	if(argc >= 5) {
-		for(int x = 0; x < (argc-2); x++) {
-			switch(x) {
-				case window_e:
-					ptr = window;
-					path = name[window_e];
-					len = length_win;
-					break;
-				case color_e:
-					ptr = color;
-					path = name[color_e];
-					len = length_clr;
-					break;
-				case font_e:
-					ptr = font;
-					path = name[font_e];
-					len = length_fon;
-					break;
-				}
-				
-				// Checking Is there the config?
-				int len_name = strlen(name[x]);
-				for(int i = 0; i < len; i++) {
-				if(!strcmp(ptr[i].name, argv[x+2])) {
-					// Open file
-					int sz_path = strlen(ptr[i].name) + len_name+1;
-					char toPath[sz_path];
-					memset(toPath, 0, sz_path);
-					strcat(toPath, name[x]), strcat(toPath, "/"), strcat(toPath, ptr[i].name);
-					
-					FILE *ptrFile = fopen(toPath, "r");
-					if(!ptrFile)			// If fopen func return NULL, run the statement below
-						continue;
-					printf("Founded the \"%s\" config file in \"%s\"\n", argv[x+2], path);
-						
-					// Read content of file
-					fseek(ptrFile, 0, SEEK_END);
-					int bytes_rd = ftell(ptrFile);
-					fseek(ptrFile, 0, SEEK_SET);
-					
-					// Then, store them to buffer
-					ptr[i].content = malloc(bytes_rd);
-					memset(ptr[i].content, 0, bytes_rd);
-					fread(ptr[i].content, 1, bytes_rd-1, ptrFile);
-					ptr[i].content[bytes_rd] = '\0';
-					fclose(ptrFile);
-				}
-			}
-		}
-	}
-	else {
-		printf("Just %d arguments, You need %d more\n", argc-2, 3-(argc-2));
 	}
 }
 
