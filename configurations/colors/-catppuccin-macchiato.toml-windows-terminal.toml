@@ -1,0 +1,26 @@
+[colors]
+cursor = {text = "#f2f2f2", cursor = "#16c60c"}
+
+[colors.primary]
+background = "#0c0c0c"
+foreground = "#f2f2f2"
+
+[colors.normal]
+white = "#f2f2f2"
+black = "#0c0c0c"
+blue = "#3b78ff"
+green = "#16c60c"
+cyan = "#61d6d6"
+red = "#e74856"
+magenta = "#b4009e"
+yellow = "#f9f1a5"
+
+[colors.bright]
+white = "#f2f2f2"
+black = "#f2f2f2"
+blue = "#3b78ff"
+green = "#16c60c"
+cyan = "#61d6d6"
+red = "#e74856"
+magenta = "#b4009e"
+yellow = "#f9f1a5"

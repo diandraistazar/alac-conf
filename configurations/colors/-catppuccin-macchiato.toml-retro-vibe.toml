@@ -1,0 +1,28 @@
+
+[colors]
+cursor = { text = "#fffcf2", cursor = "#ff6ac1" }
+
+[colors.primary]
+background = "#100720"       # Ungu hitam pekat seperti langit LSD
+foreground = "#fffcf2"       # Warna tulang krem neon aneh
+
+[colors.normal]
+black   = "#100720"          # Tetap gelap misterius
+red     = "#ff3f3f"          # Merah digital meleleh
+green   = "#32ff6a"          # Hijau matrix tapi agak nyala
+yellow  = "#ffe900"          # Kuning boros listrik
+blue    = "#5f4bff"          # Biru ungu glitch
+magenta = "#ff6ac1"          # Pink listrik nge-blink
+cyan    = "#14fff1"          # Cyan alien dari galaksi lain
+white   = "#ffe9e3"          # Putih retak
+
+[colors.bright]
+black   = "#30243c"          # Bayangan warna-warna
+red     = "#ff7a7a"
+green   = "#69ff8e"
+yellow  = "#fff86e"
+blue    = "#9c8eff"
+magenta = "#ff9adb"
+cyan    = "#6efffc"
+white   = "#fff9f7"
+

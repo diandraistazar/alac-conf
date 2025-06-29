@@ -1,0 +1,26 @@
+[colors]
+cursor = { text = "#fdf7f1", cursor = "#bda8f9" }
+
+[colors.primary]
+background = "#120e1b"       # hitam violet gelap, seperti ruang angkasa jauh
+foreground = "#fdf7f1"       # krem susu dingin
+
+[colors.normal]
+black   = "#120e1b"          # seamless dengan background
+red     = "#dd5e75"          # pink dusty seperti debu planet
+green   = "#8fbe91"          # hijau pastel daun pudar
+yellow  = "#e2c88b"          # seperti emas tua matte
+blue    = "#7ca0f4"          # biru nebula — tidak mainstream
+magenta = "#bda8f9"          # ungu susu bintang
+cyan    = "#93e0e3"          # cyan lembut, tidak menyilaukan
+white   = "#fdf7f1"          # putih kuning pudar, khas tema bintang
+
+[colors.bright]
+black   = "#2c2635"
+red     = "#e88c99"
+green   = "#b5dcb8"
+yellow  = "#f2dea7"
+blue    = "#a8c0ff"
+magenta = "#d5c5ff"
+cyan    = "#bff4f5"
+white   = "#ffffff"
