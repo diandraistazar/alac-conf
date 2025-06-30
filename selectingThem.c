@@ -97,9 +97,12 @@ void selectingThem(char **argv, int argc) {
 			}
 
 			printf("Writing to %s\n", config_path);
-			fwrite(buffer, len, sizeof(char), ptrFile);	// Write buffer to alacritty.toml
+			if(fwrite(buffer, len, sizeof(char), ptrFile) == len) {	// Write buffer to alacritty.toml
+				printf("Success to write config\n");
+			}
+			else
+				perror("Failed to write config");
 			
-			printf("Success to write config\n");
 			fclose(ptrFile);
 			free(buffer);
 			printf("Program closed\n");
