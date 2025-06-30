@@ -9,11 +9,14 @@ typedef struct {
 	char *content; // Store content of file
 } Files;
 
-extern Files *window, *color, *font;
-extern int length_win, length_clr, length_fon;
-extern char *name[];
+typedef struct {
+	Files *ptr_conf;
+	int length;
+	char *config_path;
+} Configs;
+
+extern Configs *configs;
 extern size_t size;
-extern char *config_path;
 
 // Enum
 enum which {

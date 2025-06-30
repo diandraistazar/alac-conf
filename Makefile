@@ -1,7 +1,9 @@
 CC := gcc
-FLAGS := -Wall --std=c99 -g
-SRC 	:= main.c listingThem.c selectingThem.c
-SRC_O := main.o listingThem.o selectingThem.o
+FLAGS := -Wall --std=c99
+#SRC 	:= main.c listingThem.c selectingThem.c
+#SRC_O := main.o listingThem.o selectingThem.o
+SRC := main.c
+SRC_O := main.o
 OUT := alacrittyTheme
 
 all:
