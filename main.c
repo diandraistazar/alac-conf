@@ -1,13 +1,21 @@
 #include "main.h"
 
 // Struct
-Configs *configs = NULL;
-size_t size = 3;
+// Config paths
 static char *config_path[]  = {
 	"configurations/windows",
 	"configurations/fonts",
 	"configurations/colors",
 };
+// Label
+static char *name[] = {
+	"window",
+	"font",
+	"color",
+};
+// Size
+size_t size = sizeof(config_path)/sizeof(name[0]); 
+Configs *configs = NULL;
 
 /* Main func */
 int main(int argc, char *argv[]) {
@@ -27,14 +35,11 @@ int main(int argc, char *argv[]) {
 
 			// Initialize config files
 			load_configs();
-
+			
 			// Listing file
 			if(!strcmp(argv[1], "list")) {
 				if(argv[2]) {
-					//if(!strcmp(argv[2], "window")) listingThem(window_e);
-					//else if(!strcmp(argv[2], "color")) listingThem(color_e);
-					//else if(!strcmp(argv[2], "font")) listingThem(font_e);
-					//else printf("There is no \"%s\" argument\n", argv[2]);
+					listingThem(argv, argc);	
 				}
 				else printf("Needed an argument\n");
 				break;
@@ -54,7 +59,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Free Memory
-	//freeAll();
+	freeAll();
 	return 0;
 }
 
@@ -64,10 +69,14 @@ void load_configs(void) {
 	DIR *temp				= NULL;
 	struct dirent *file	= NULL;
 	configs					= realloc(configs, sizeof(Configs) * size);		// Create block memory for configs
-	int sz_conf				= 0;
+	int sz_conf, sz_d_name;
 	
 	for(int i = 0; i < size; i++) {
 		configs[i].config_path = config_path[i];
+		configs[i].name = name[i];
+		configs[i].ptr_conf = NULL;
+		configs[i].length = 0;
+
 		temp = opendir(configs[i].config_path);
 		
 		while((file = readdir(temp))) {
@@ -75,11 +84,14 @@ void load_configs(void) {
 				continue;
 			
 			sz_conf = configs[i].length;
+			sz_d_name = strlen(file->d_name)+1;
 
-			configs[i].ptr_conf						= malloc(sizeof(Files) * (configs[i].length+1));
-			configs[i].ptr_conf[sz_conf].name	= malloc(strlen(file->d_name));
-			configs[i].length							+= 1;
+			configs[i].ptr_conf = realloc(configs[i].ptr_conf, sizeof(Files) * (sz_conf+1));;
+			configs[i].ptr_conf[sz_conf].name = malloc(sz_d_name);
+			configs[i].ptr_conf[sz_conf].content = NULL;
+			configs[i].length += 1;
 			sprintf(configs[i].ptr_conf[sz_conf].name, file->d_name);
+			
 		}
 
 		closedir(temp);

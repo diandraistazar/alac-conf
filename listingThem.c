@@ -1,37 +1,15 @@
 #include "main.h"
 
-void listingThem(enum which Opt) {
-	Files *ptr = NULL;
-	char *name = NULL;
-	int len;
-
-	switch(Opt) {
-		case window_e:
-			ptr = window;
-			len = length_win;
-			name = "Window";
-			break;
-		case font_e:
-			ptr = font;
-			len = length_fon;
-			name = "Font";
-			break;
-		case color_e:
-			ptr = color;
-			len = length_clr;
-			name = "Color";
-			break;
-		case all_e:
-			break;
-	}
-
-	// Checking
-	if(len == 0 && name) {
-		printf("Honestly, There are no \"%s\" configs available\n", name);
-	}
-	else {
-		// Do it
-		printf("%s configs:\n", name);
-		for(int i = 0; i < len; i++) printf("- %s\n", ptr[i].name);
+void listingThem(char **argv, int argc) {
+	for(int x = 0; x < (argc-2); x++) {
+		for(int j = 0; j < size; j++) {
+			if(!strcmp(argv[x+2], configs[j].name)) {
+				printf("%s configs:\n", configs[j].name);
+				for(int i = 0; i < configs[j].length; i++) {
+					printf("%d %s\n", i, configs[j].ptr_conf[i].name);
+				}
+				break;
+			}
+		}
 	}
 }

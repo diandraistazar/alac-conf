@@ -10,6 +10,7 @@ typedef struct {
 } Files;
 
 typedef struct {
+	char *name;
 	Files *ptr_conf;
 	int length;
 	char *config_path;
@@ -18,18 +19,10 @@ typedef struct {
 extern Configs *configs;
 extern size_t size;
 
-// Enum
-enum which {
-	window_e,
-	color_e,
-	font_e,
-	all_e,
-};
-
 // Function Prototypes
 void load_configs(void);
 void freeAll(void);
 void printHelp(void);
 void prntList(Files *strc);
-void listingThem(enum which Opt);
+void listingThem(char **argv, int argc);
 void selectingThem(char **argv, int argc);
