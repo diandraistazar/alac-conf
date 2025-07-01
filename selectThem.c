@@ -1,6 +1,6 @@
 #include "main.h"
 
-void selectingThem(char **argv, int argc) {
+void selectThem(char **argv, int argc) {
 	char *buffer = NULL;
 	int len, sz_path, bytes_rd;
 

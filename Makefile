@@ -1,8 +1,8 @@
 CC := gcc
 FLAGS := -Wall --std=c99
-SRC 	:= main.c listingThem.c selectingThem.c reload-my-config.c
-SRC_O := main.c listingThem.c selectingThem.c reload-my-config.c
-OUT := alacrittyTheme
+SRC 	:= main.c listThem.c selectThem.c reload.c
+SRC_O := main.c listThem.c selectThem.c reload.c
+OUT := alacritty-conf-selector 
 
 all:
 	${CC} ${FLAGS} -c ${SRC}

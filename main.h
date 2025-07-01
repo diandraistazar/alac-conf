@@ -26,6 +26,6 @@ void load_configs(void);
 void freeAll(void);
 void printHelp(void);
 void prntList(Files *strc);
-void listingThem(char **argv, int argc);
-void selectingThem(char **argv, int argc);
+void listThem(char **argv, int argc);
+void selectThem(char **argv, int argc);
 void reloadMyConfig();

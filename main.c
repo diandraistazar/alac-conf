@@ -1,21 +1,22 @@
 #include "main.h"
 
 // Struct
-// Config paths
+// Configs path
 static char *config_path[]  = {
-	"configurations/windows",
-	"configurations/fonts",
-	"configurations/colors",
+	"/home/diandra/.config/alacritty/configurations/windows",
+	"/home/diandra/.config/alacritty/configurations/fonts",
+	"/home/diandra/.config/alacritty/configurations/colors",
 };
-// Label
+// Labels
 static char *name[] = {
 	"window",
 	"font",
 	"color",
 };
-size_t size = sizeof(config_path)/sizeof(name[0]);	// Size
-Configs *configs = NULL;									// Configs
-size_t total_configs;										// Total all available config
+size_t size = sizeof(config_path)/sizeof(name[0]);
+Configs *configs = NULL;
+size_t total_configs;
+// Path alacritty config
 char *alac_conf = "/home/diandra/.config/alacritty/alacritty.toml";
 
 /* Main func */
@@ -38,13 +39,13 @@ int main(int argc, char *argv[]) {
 
 		// Listing file
 		if(!strcmp(argv[1], "list")) {
-			if(argv[2]) listingThem(argv, argc);	
+			if(argv[2]) listThem(argv, argc);	
 			else printf("Needed an argument\n");
 		}
 
 		// Selecting Configs
 		else if(!strcmp(argv[1], "select")) {
-			if(argv[2]) selectingThem(argv, argc);
+			if(argv[2]) selectThem(argv, argc);
 			else printf("Needed an argument\n");
 		}
 
@@ -53,7 +54,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		// Invalid Option Argument
-		//else printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
+		else printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
 	}
 	
 	// Free Memory
@@ -108,10 +109,10 @@ void freeAll(void) {
 }
 
 void printHelp(void) {
-	char *help = "alacrittyTheme version 0.1\n"
+	char *help = "alacritty-conf-selector version 0.1\n"
 	             "Created by Diandra\n\n"
-	             "list [window/color/font/all]\n"
-	             "select [window-cfg, color-cfg, font-cfg]\n"
-	             "reload\n";
+	             "list [window/color/font/all]                # List available configs\n"
+	             "select [window-cfg, color-cfg, font-cfg]    # Select specific configs to use\n"
+	             "reload                                      # Reload Alacritty config after changes (in config_path)\n";
 	fprintf(stdout, "%s", help);
 }

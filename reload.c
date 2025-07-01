@@ -30,9 +30,9 @@ void reloadMyConfig() {
 		}
 	}
 	
-	// Call selectingThem
+	// Call selectThem
 	printf("\nReloading Started..\n\n");
-	selectingThem(fake_args, sz_arg);
+	selectThem(fake_args, sz_arg);
 	
 	// Program Closed
 	fclose(ptrFile);

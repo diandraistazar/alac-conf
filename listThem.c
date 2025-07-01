@@ -1,10 +1,10 @@
 #include "main.h"
 
-void listingThem(char **argv, int argc) {
+void listThem(char **argv, int argc) {
 	int isThere;
 
 	if(!strcmp(argv[2], "all")) {
-		printf("All:\ntotal = %ld\n", total_configs);
+		printf("All (total = %ld)\n", total_configs);
 		for(int x = 0; x < size; x++) {
 			printf("\n%s configs:\n", configs[x].name);
 			for(int j = 0; j < configs[x].length; j++)
