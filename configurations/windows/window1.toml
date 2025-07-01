@@ -1,7 +1,7 @@
 [window]
 padding = { x = 4, y = 4 }
 decorations = "None"
-opacity = 0.98                     
+opacity = 1.0                     
 blur = false
 startup_mode = "Maximized"
 title = "My Terminal"

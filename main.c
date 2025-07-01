@@ -48,12 +48,12 @@ int main(int argc, char *argv[]) {
 			else printf("Needed an argument\n");
 		}
 
-		else if(!strcmp(argv[2], "reload")) {
+		else if(!strcmp(argv[1], "reload")) {
 			reloadMyConfig();
 		}
 
 		// Invalid Option Argument
-		else printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
+		//else printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
 	}
 	
 	// Free Memory
