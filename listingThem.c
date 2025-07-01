@@ -1,15 +1,32 @@
 #include "main.h"
 
 void listingThem(char **argv, int argc) {
-	for(int x = 0; x < (argc-2); x++) {
-		for(int j = 0; j < size; j++) {
-			if(!strcmp(argv[x+2], configs[j].name)) {
-				printf("%s configs:\n", configs[j].name);
-				for(int i = 0; i < configs[j].length; i++) {
-					printf("%d %s\n", i, configs[j].ptr_conf[i].name);
-				}
-				break;
-			}
+	int isThere;
+
+	if(!strcmp(argv[2], "all")) {
+		printf("All:\ntotal = %ld\n", total_configs);
+		for(int x = 0; x < size; x++) {
+			printf("\n%s configs:\n", configs[x].name);
+			for(int j = 0; j < configs[x].length; j++)
+				printf("- %s\n", configs[x].ptr_conf[j].name);
 		}
+		return;
+	}
+
+	for(int x = 0; x < size; x++) {
+		if(!strcmp(argv[2], configs[x].name)) {
+			printf("%s configs:\n", configs[x].name);
+			for(int i = 0; i < configs[x].length; i++)
+				printf("- %s\n", configs[x].ptr_conf[i].name);
+
+			isThere = 1;
+			return;
+		}
+		isThere = 0;
+	}
+
+	if(!isThere) {
+		printf("Invalid \"%s\" option\n", argv[2]);
+		return;
 	}
 }

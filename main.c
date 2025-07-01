@@ -13,51 +13,49 @@ static char *name[] = {
 	"font",
 	"color",
 };
-// Size
-size_t size = sizeof(config_path)/sizeof(name[0]); 
-Configs *configs = NULL;
+size_t size = sizeof(config_path)/sizeof(name[0]);	// Size
+Configs *configs = NULL;									// Configs
+size_t total_configs;										// Total all available config
+char *alac_conf = "/home/diandra/.config/alacritty/alacritty.toml";
 
 /* Main func */
 int main(int argc, char *argv[]) {
 	// Checking is there argument when run this program
-	switch(argc) {
-		case 1:
-			printf("Hmm, there is no arguments..\n");
-			printf("See \"help\" for more details\n");
-			break;
-	
-		default:
-			// Print Help
-			if(!strcmp(argv[1], "help")) {
-				printHelp();
-				break;
-			}
-
-			// Initialize config files
-			load_configs();
-			
-			// Listing file
-			if(!strcmp(argv[1], "list")) {
-				if(argv[2]) {
-					listingThem(argv, argc);	
-				}
-				else printf("Needed an argument\n");
-				break;
-			}
-		
-			// Selecting Configs
-			else if(!strcmp(argv[1], "select")) {	// Select
-				if(argv[2]) {
-					//selectingThem(argv, argc);
-				}
-				else printf("Needed an argument\n");
-				break;
-			}
-		
-			// Invalid Option Argument
-			else printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
+	if(argc == 1) {
+		printf("Hmm, there is no arguments..\n");
+		printf("See \"help\" for more details\n");
+		return 0;
 	}
+	else {
+		// Print Help
+		if(!strcmp(argv[1], "help")) {
+			printHelp();
+			return 0;
+		}
 
+		// Initialize config files
+		load_configs();
+
+		// Listing file
+		if(!strcmp(argv[1], "list")) {
+			if(argv[2]) listingThem(argv, argc);	
+			else printf("Needed an argument\n");
+		}
+
+		// Selecting Configs
+		else if(!strcmp(argv[1], "select")) {
+			if(argv[2]) selectingThem(argv, argc);
+			else printf("Needed an argument\n");
+		}
+
+		else if(!strcmp(argv[2], "reload")) {
+			reloadMyConfig();
+		}
+
+		// Invalid Option Argument
+		else printf("There is no \"%s\" option argument\nSee \"help\" for available options\n", argv[1]);
+	}
+	
 	// Free Memory
 	freeAll();
 	return 0;
@@ -92,6 +90,7 @@ void load_configs(void) {
 			configs[i].length += 1;
 			sprintf(configs[i].ptr_conf[sz_conf].name, file->d_name);
 			
+			total_configs+=1;
 		}
 
 		closedir(temp);
@@ -111,7 +110,8 @@ void freeAll(void) {
 void printHelp(void) {
 	char *help = "alacrittyTheme version 0.1\n"
 	             "Created by Diandra\n\n"
-	             "list [window,color,font]\n"
-	             "select [window-cfg, color-cfg, font-cfg]\n";
+	             "list [window/color/font/all]\n"
+	             "select [window-cfg, color-cfg, font-cfg]\n"
+	             "reload\n";
 	fprintf(stdout, "%s", help);
 }

@@ -18,6 +18,8 @@ typedef struct {
 
 extern Configs *configs;
 extern size_t size;
+extern size_t total_configs;
+extern char *alac_conf;
 
 // Function Prototypes
 void load_configs(void);
@@ -26,3 +28,4 @@ void printHelp(void);
 void prntList(Files *strc);
 void listingThem(char **argv, int argc);
 void selectingThem(char **argv, int argc);
+void reloadMyConfig(void);

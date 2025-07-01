@@ -1,114 +1,74 @@
 #include "main.h"
 
 void selectingThem(char **argv, int argc) {
-	Files *ptr = NULL, **configs = malloc(sizeof(Files)+(size+10));
-	char *buffer = NULL, *path = NULL;
-	int len;
+	char *buffer = NULL;
+	int len, sz_path, bytes_rd;
 
+	// Better way
 	if(argc >= 5) {
 		printf("Finding started..\n");
-		for(int x = 0; x < (argc-2); x++) {
-			switch(x) {
-				case window_e:
-					ptr = window;
-					path = name[window_e];
-					len = length_win;
-					break;
-				case color_e:
-					ptr = color;
-					path = name[color_e];
-					len = length_clr;
-					break;
-				case font_e:
-					ptr = font;
-					path = name[font_e];
-					len = length_fon;
-					break;
-				}
+		for(int u = 0; u < size; u++) {
 	
-				// Checking Is there the config?
-				int len_name = strlen(name[x]);
-				for(int i = 0; i < len; i++) {
-					if(!strcmp(ptr[i].name, argv[x+2])) {
-						// Open file
-						int sz_path = strlen(ptr[i].name) + len_name+1;
-						char toPath[sz_path];
-						memset(toPath, 0, sz_path);
-						strcat(toPath, name[x]), strcat(toPath, "/"), strcat(toPath, ptr[i].name);
+			// Checking Is there the config?
+			len = strlen(configs[u].config_path);
+			for(int i = 0; i < configs[u].length; i++) {
+				if(!strcmp(configs[u].ptr_conf[i].name, argv[u+2])) {
+					// Open file
+					sz_path = strlen(configs[u].ptr_conf[i].name) + len+1;
+					buffer = realloc(buffer, sz_path);
+					memset(buffer, 0, sz_path);
+					sprintf(buffer, "%s/%s", configs[u].config_path, configs[u].ptr_conf[i].name);
+				
+					FILE *ptrFile = fopen(buffer, "r");
+					if(!ptrFile)			// If fopen func return NULL, run the statement below
+						continue;
 					
-						FILE *ptrFile = fopen(toPath, "r");
-						if(!ptrFile)			// If fopen func return NULL, run the statement below
-							continue;
-						printf("Founded the \"%s\" config file in \"%s\"\n", argv[x+2], path);
-						
-						// Read content of file
-						fseek(ptrFile, 0, SEEK_END);
-						int bytes_rd = ftell(ptrFile);
-						fseek(ptrFile, 0, SEEK_SET);
+					printf("Founded the \"%s\" config file in \"%s\"\n", argv[u+2], configs[u].config_path);
+					// Read content of file
+					fseek(ptrFile, 0, SEEK_END);
+					bytes_rd = ftell(ptrFile);
+					fseek(ptrFile, 0, SEEK_SET);
 					
-						// Then, store them to buffer
-						ptr[i].content = malloc(bytes_rd+1);
-						memset(ptr[i].content, 0, bytes_rd);
-						fread(ptr[i].content, 1, bytes_rd-1, ptrFile);
-						ptr[i].content[bytes_rd] = '\0';
-						fclose(ptrFile);
-					
-						// Load
-						switch(x) {
-							case window_e:
-								configs[window_e] = &ptr[i];
-								break;
-							case color_e:
-								configs[color_e] = &ptr[i];
-								break;
-							case font_e:
-								configs[font_e] = &ptr[i];
-								break;
-						}
-					}
+					// Then, store them to buffer
+					configs[u].ptr_conf[i].content = malloc(bytes_rd+1);
+					memset(configs[u].ptr_conf[i].content, 0, bytes_rd);
+					fread(configs[u].ptr_conf[i].content, 1, bytes_rd-1, ptrFile);
+					configs[u].ptr_conf[i].content[bytes_rd] = '\0';
+					fclose(ptrFile);
 				}
-		}
-		
-		// Store as one complete alacritty config 
-		FILE *ptrFile = fopen(config_path, "w");
-		if(!ptrFile) {
-			perror("Can't open directory or file");
-		}
-		else {
-			// Setting buffer size
-			len = 0;
-			ptr = NULL;
-			for(int x = 0; x < size; x++) {
-				len += strlen(configs[x]->name) + strlen(configs[x]->content)+3;	// +3 for # and \n
 			}
-			
-			printf("\nAllocated memory as buffer..\n");
-			buffer = malloc(len);		// allocation memory
-			memset(buffer, 0, len);		// Clear memory
-			char temp[len];				// Temp
-			
-			printf("\nWriting started..\n");
-			for(int x = 0; x < size; x++) {
-				printf("Writing \"%s\" content to buffer\n", configs[x]->name);
-				sprintf(temp, "#%s\n"
-				              "%s\n\n",
-				              configs[x]->name, configs[x]->content);
-				strcat(buffer, temp);
-			}
-
-			printf("Writing to %s\n", config_path);
-			if(fwrite(buffer, len, sizeof(char), ptrFile) == len) {	// Write buffer to alacritty.toml
-				printf("Success to write config\n");
-			}
-			else
-				perror("Failed to write config");
-			
-			fclose(ptrFile);
-			free(buffer);
-			printf("Program closed\n");
 		}
+		// Clear memory address of buffer
+		free(buffer);
 	}
+	// If not, run the statement below
 	else {
 		printf("Just %d arguments, You need %d more\n", argc-2, 3-(argc-2));
 	}
+	
+	// Store as one complete alacritty config
+	// Delete the config first
+	remove(alac_conf);
+
+	// Then, create the new one
+	FILE *ptrFile = fopen(alac_conf, "a");
+	if(!ptrFile) {
+		perror("Can't open directory or file");
+	}
+	else {
+		printf("\nWriting started..\n");
+		for(int x = 0; x < size; x++) {
+			for(int j = 0; j < configs[x].length; j++) {
+				if(configs[x].ptr_conf[j].content) {
+					printf("Writing \"%s\" content file to \"%s\"\n", configs[x].ptr_conf[j].name, alac_conf);
+					fprintf(ptrFile, "#%s\n%s\n", configs[x].ptr_conf[j].name, configs[x].ptr_conf[j].content);
+				}
+			}
+		}
+		printf("\nSuccessfully writing config to \"%s\"\n", alac_conf);
+	}
+
+	fclose(ptrFile);
+	printf("Program closed\n");
+
 }

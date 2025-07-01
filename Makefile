@@ -1,18 +1,15 @@
 CC := gcc
 FLAGS := -Wall --std=c99
-#SRC 	:= main.c listingThem.c selectingThem.c
-#SRC_O := main.o listingThem.o selectingThem.o
-SRC := main.c listingThem.c
-SRC_O := main.o listingThem.o
+SRC 	:= main listingThem selectingThem reload-my-config
 OUT := alacrittyTheme
 
 all:
-	${CC} ${FLAGS} -c ${SRC}
-	${CC} ${SRC_O} -o ${OUT}	
+	${CC} ${FLAGS} -c ${SRC}.c
+	${CC} ${SRC}.o -o ${OUT}	
 
 install:
-	${CC} ${FLAGS} -c ${SRC}
-	${CC} ${SRC_O} -o ${OUT}	
+	${CC} ${FLAGS} -c ${SRC}.c
+	${CC} ${SRC}.o -o ${OUT}	
 	cp ${OUT} /usr/bin
 
 uninstall:
