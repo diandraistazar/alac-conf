@@ -52,7 +52,7 @@ reload                                      # Reload Alacritty config after chan
 ...
 ```
 
-# Examples:
+### Examples:
 1. List all available configs:
 ```
 alacritty-conf-selector list all
