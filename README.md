@@ -38,12 +38,12 @@ alac-conf help
 ```
 Example output:
 ```
-alac-conf version 0.1
+alac-conf version 0.8
 Created by Diandra
 
-list [window/color/font/all]                # List available configs
-select [window-cfg, color-cfg, font-cfg]    # Select specific configs to use 
-reload                                      # Reload Alacritty config after changes
+list [config_name / all]            # List available configs
+select [conf1, conf2, conf3, ..]    # Select specific configs to use
+reload                              # Reload Alacritty config after changes
 ...
 ```
 
