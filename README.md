@@ -1,6 +1,13 @@
 # alac-conf
 
-**alac-conf** is a program that allows you to adjust your Alacritty configuration directly from the command line. The program is written entirely in C.
+**alac-conf** is a program that allows you to adjust your Alacritty configuration directly from the command line.
+### Preview
+#### Select Configs
+![banner-github](https://github.com/diandraistazar/alac-conf/preview/select-configs.jpg)
+#### List Configs
+![banner-github](https://github.com/diandraistazar/alac-conf/preview/list-configs.jpg)
+#### Reload Configs
+![banner-github](https://github.com/diandraistazar/alac-conf/preview/reload-configs.jpg)
 
 ## Installation
 1. Clone this repository to your local machine and navigate into the directory:
