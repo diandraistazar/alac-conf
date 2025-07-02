@@ -1,6 +1,6 @@
 #include "main.h"
 
-void reloadMyConfig() {
+void reloadThem() {
 	// Size of fake arguments
 	int sz_arg = 5, sz_temp, index = 0, index_tmp = 2;
 	char **fake_args = NULL, buffer[80], *temp = NULL;

@@ -12,7 +12,7 @@ void selectThem(char **argv, int argc) {
 			// Checking Is there the config?
 			len = strlen(configs[u].config_path);
 			for(int i = 0; i < configs[u].length; i++) {
-				if(!strcmp(configs[u].ptr_conf[i].name, argv[u+2])) {
+				if(!strcmp(configs[u].ptr_conf[i].name, argv[u+2]) || atoi(argv[u+2]) == (i+1) ) {
 					// Open file
 					sz_path = strlen(configs[u].ptr_conf[i].name) + len+1;
 					buffer = realloc(buffer, sz_path);
@@ -23,7 +23,7 @@ void selectThem(char **argv, int argc) {
 					if(!ptrFile)			// If fopen func return NULL, run the statement below
 						continue;
 					
-					printf("Founded the \"%s\" config file in \"%s\"\n", argv[u+2], configs[u].config_path);
+					printf("Founded the \"%s\" config file in \"%s\"\n", configs[u].ptr_conf[i].name, configs[u].config_path);
 					// Read content of file
 					fseek(ptrFile, 0, SEEK_END);
 					bytes_rd = ftell(ptrFile);

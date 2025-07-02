@@ -19,13 +19,15 @@ typedef struct {
 extern Configs *configs;
 extern size_t size;
 extern size_t total_configs;
+
+extern char *config_path;
+extern char *config_name[];
 extern char *alac_conf;
 
 // Function Prototypes
 void load_configs(void);
 void freeAll(void);
 void printHelp(void);
-void prntList(Files *strc);
 void listThem(char **argv, int argc);
 void selectThem(char **argv, int argc);
-void reloadMyConfig();
+void reloadThem(void);

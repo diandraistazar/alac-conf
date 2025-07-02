@@ -1,23 +1,9 @@
 #include "main.h"
+#include "config.h"
 
-// Struct
-// Configs path
-static char *config_path[]  = {
-	"/home/diandra/.config/alacritty/configurations/windows",
-	"/home/diandra/.config/alacritty/configurations/fonts",
-	"/home/diandra/.config/alacritty/configurations/colors",
-};
-// Labels
-static char *name[] = {
-	"window",
-	"font",
-	"color",
-};
-size_t size = sizeof(config_path)/sizeof(name[0]);
+size_t size = sizeof(config_name)/sizeof(config_name[0]);
 Configs *configs = NULL;
 size_t total_configs;
-// Path alacritty config
-char *alac_conf = "/home/diandra/.config/alacritty/alacritty.toml";
 
 /* Main func */
 int main(int argc, char *argv[]) {
@@ -50,7 +36,7 @@ int main(int argc, char *argv[]) {
 		}
 
 		else if(!strcmp(argv[1], "reload")) {
-			reloadMyConfig();
+			reloadThem();
 		}
 
 		// Invalid Option Argument
@@ -71,13 +57,22 @@ void load_configs(void) {
 	int sz_conf, sz_d_name;
 	
 	for(int i = 0; i < size; i++) {
-		configs[i].config_path = config_path[i];
-		configs[i].name = name[i];
+		// Create path
+		configs[i].config_path = malloc(strlen(config_path) + strlen(config_name[i]) + 1);
+		sprintf(configs[i].config_path, "%s/%s", config_path, config_name[i]);
+
+		configs[i].name = config_name[i];
 		configs[i].ptr_conf = NULL;
 		configs[i].length = 0;
 
 		temp = opendir(configs[i].config_path);
 		
+		if(!temp) {
+			perror("Can't open config directory");
+			freeAll();
+			exit(EXIT_FAILURE);
+		}
+
 		while((file = readdir(temp))) {
 			if(!strcmp(file->d_name, ".") || !strcmp(file->d_name, ".."))
 				continue;
@@ -105,14 +100,15 @@ void freeAll(void) {
 			free(configs[x].ptr_conf[j].name);
 			free(configs[x].ptr_conf[j].content);
 		}
+		free(configs[x].config_path);
 	}
 }
 
 void printHelp(void) {
-	char *help = "alacritty-conf-selector version 0.1\n"
+	char *help = "alac-conf version 0.8\n"
 	             "Created by Diandra\n\n"
-	             "list [window/color/font/all]                # List available configs\n"
-	             "select [window-cfg, color-cfg, font-cfg]    # Select specific configs to use\n"
-	             "reload                                      # Reload Alacritty config after changes (in config_path)\n";
+	             "list [config_name / all]            # List available configs\n"
+	             "select [conf1, conf2, conf3, ..]    # Select specific configs to use\n"
+	             "reload                              # Reload Alacritty config after changes (in config_path)\n";
 	fprintf(stdout, "%s", help);
 }

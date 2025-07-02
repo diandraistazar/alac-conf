@@ -1,8 +1,8 @@
 CC := gcc
 FLAGS := -Wall --std=c99
-SRC 	:= main.c listThem.c selectThem.c reload.c
-SRC_O := main.c listThem.c selectThem.c reload.c
-OUT := alacritty-conf-selector 
+SRC 	:= main.c listThem.c selectThem.c reloadThem.c
+SRC_O := main.c listThem.c selectThem.c reloadThem.c
+OUT := alac-conf 
 
 all:
 	${CC} ${FLAGS} -c ${SRC}
@@ -15,4 +15,5 @@ install:
 
 uninstall:
 	rm ${OUT}
+	rm *.o
 	rm /usr/bin/${OUT}
